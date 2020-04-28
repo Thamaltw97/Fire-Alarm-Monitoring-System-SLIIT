@@ -30,6 +30,7 @@ namespace FireAlarmMonitoringSystem.Web.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyConnection")));
             services.AddScoped<ISensorPersistenceService, SensorPersistenceService>();
@@ -43,6 +44,11 @@ namespace FireAlarmMonitoringSystem.Web.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
