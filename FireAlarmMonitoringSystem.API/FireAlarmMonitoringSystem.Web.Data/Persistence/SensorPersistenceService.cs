@@ -48,7 +48,7 @@ namespace FireAlarmMonitoringSystem.Web.Data.Persistence
             }
             else
             {
-                dbModelObj.sensorName = modelObj.sensorName;
+                //dbModelObj.sensorName = modelObj.sensorName;
                 dbModelObj.floorNo = modelObj.floorNo;
                 dbModelObj.roomNo = modelObj.roomNo;
                 dbModelObj.sensorStatus = modelObj.sensorStatus;
