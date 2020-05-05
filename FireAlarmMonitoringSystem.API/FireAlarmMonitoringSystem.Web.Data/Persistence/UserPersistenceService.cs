@@ -35,5 +35,30 @@ namespace FireAlarmMonitoringSystem.Web.Data.Persistence
             }
             
         }
+
+        public async Task<ApiResult> AddUser(UserModel user)
+        {
+            if (user != null)
+            {
+                await _context.AddAsync(user);
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return new ApiResult { BOOVAL = true, MSG = "Sucessfully Saved." };
+                }
+                catch (DbUpdateException dbUpdateEx)
+                {
+                    return new ApiResult { BOOVAL = false, MSG = "Error saving data - " + dbUpdateEx };
+                }
+                catch (Exception ex)
+                {
+                    return new ApiResult { BOOVAL = false, MSG = "Error saving data - " + ex };
+                }
+            }
+            else
+            {
+                return new ApiResult { BOOVAL = false, MSG = "Please enter correct sensor details !" };
+            }
+        }
     }
 }

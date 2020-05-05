@@ -27,9 +27,9 @@ class App extends React.Component {
         }).then(data =>{
             console.log(data);
 
-            let count = data.msg.length;
+            //let count = data.msg.length;
 
-            for(let i = 0; i < count ; i++){
+            for(let i = 0; i < 100 ; i++){
 
                 //Passing POST Json objects to each sensor to update levels
                 const obj = {

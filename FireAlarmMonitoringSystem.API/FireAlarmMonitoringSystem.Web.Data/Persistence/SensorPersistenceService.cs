@@ -61,7 +61,9 @@ namespace FireAlarmMonitoringSystem.Web.Data.Persistence
 
         public async Task<ApiResult> GetSensors()
         {
-            var retSensorObj = await _context.SensorDetails.Where(sensorDetails => sensorDetails.sensorStatus.Equals("A")).ToListAsync();
+            var retSensorObj = await _context.SensorDetails
+                ///.Where(sensorDetails => sensorDetails.sensorStatus.Equals("A"))
+                .ToListAsync();
             return new ApiResult { BOOVAL = true, MSG = retSensorObj };
         }
 

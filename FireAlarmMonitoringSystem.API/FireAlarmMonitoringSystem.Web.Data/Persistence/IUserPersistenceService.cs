@@ -9,5 +9,7 @@ namespace FireAlarmMonitoringSystem.Web.Data.Persistence
     public interface IUserPersistenceService
     {
         Task<UserModel> SignIn(UserModel user);
+
+        Task<ApiResult> AddUser(UserModel user);
     }
 }

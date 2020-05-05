@@ -31,5 +31,11 @@ namespace FireAlarmMonitoringSystem.Web.API.Controllers
             //Authentication authentication = new Authentication(_configuration);
             //return authentication.GetToken(loginUser);
         }
+
+        [HttpPost("AddUser")]
+        public async Task<ApiResult> AddUser(UserModel user)
+        {
+            return await _userPerService.AddUser(user);
+        }
     }
 }
