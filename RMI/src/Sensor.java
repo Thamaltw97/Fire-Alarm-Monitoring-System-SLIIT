@@ -2,20 +2,29 @@
  *
  * @author Thamal Wijetunge
  */
-public class Alarm {
-    int alarmId;
+public class Sensor {
+    int sensorId;
+    String sensorName;
     int floorNumber;
     int roomNumber;
     int smokeLevel;
     int co2Level;
     String status;
 
-    public int getAlarmId() {
-        return alarmId;
+    public int getSensorId() {
+        return sensorId;
     }
 
-    public void setAlarmId(int alarmId) {
-        this.alarmId = alarmId;
+    public void setSensorId(int sensorId) {
+        this.sensorId = sensorId;
+    }
+    
+    public String getSensorName() {
+        return sensorName;
+    }
+
+    public void setSensorName(String sensorName) {
+        this.sensorName = sensorName;
     }
 
     public int getFloorNumber() {

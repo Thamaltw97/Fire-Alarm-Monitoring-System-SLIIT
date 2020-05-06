@@ -27,10 +27,9 @@ import org.json.JSONObject;
  *
  * @author Thamal Wijetunge
  */
-
 public class Server extends UnicastRemoteObject implements Service {
 
-    StringBuffer response = new StringBuffer(); 
+    StringBuffer response = new StringBuffer();
     StringBuffer responseUsers = new StringBuffer();
     public static ArrayList<String> criticalAlarmIds = new ArrayList<String>();
     public static ArrayList<String> criticalAlarmIdsTemp = new ArrayList<String>();
@@ -43,7 +42,7 @@ public class Server extends UnicastRemoteObject implements Service {
             @Override
             public void run() {
                 try {
-                    
+
                     System.out.println("Hello from Server !");
                     getSensorDetailsApi();
 
@@ -63,10 +62,10 @@ public class Server extends UnicastRemoteObject implements Service {
 
             Server svr = new Server();
             Registry registry = LocateRegistry.getRegistry();
-            registry.bind("SensorService", svr); 
+            registry.bind("SensorService", svr);
             System.out.println("RMI initialized....");
-            
-        } catch (RemoteException re) { 
+
+        } catch (RemoteException re) {
             System.err.println(re.getMessage());
         } catch (AlreadyBoundException abe) {
             System.err.println(abe.getMessage());
@@ -74,7 +73,6 @@ public class Server extends UnicastRemoteObject implements Service {
 
     }
 
-    
     @Override
     public String adminLogin(String userName, String password) throws RemoteException {
 
@@ -92,12 +90,12 @@ public class Server extends UnicastRemoteObject implements Service {
 
             JSONObject myResponse = new JSONObject(response.getBody().toString());
 
-            if (response.getStatus() == 200) { 
+            if (response.getStatus() == 200) {
                 return String.valueOf(response.getStatus());
             } else {
                 return "404";
             }
-            
+
         } catch (UnirestException ex) {
             System.out.println("out : " + ex);
         } catch (JSONException ex) {
@@ -109,8 +107,7 @@ public class Server extends UnicastRemoteObject implements Service {
         return null;
 
     }
-    
-    
+
     @Override
     public void getSensorDetailsApi() {
         String url = "http://localhost:44381/api/sensor/getsensors";
@@ -122,7 +119,7 @@ public class Server extends UnicastRemoteObject implements Service {
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())); 
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine = in.readLine();
 
             StringBuilder sb = new StringBuilder(inputLine);
@@ -136,16 +133,16 @@ public class Server extends UnicastRemoteObject implements Service {
                 this.response.append(finJStr);
                 finJStr = null;
             }
-            
-            ArrayList<Alarm> emailArray = new ArrayList<>();
+
+            ArrayList<Sensor> emailArray = new ArrayList<>();
             emailArray = getSensors(response.toString());
-            
+
             for (int i = 0; i < emailArray.size(); i++) {
                 if (emailArray.get(i).smokeLevel > 5 || emailArray.get(i).co2Level > 5) {
                     emailService.sendMail();
                 }
             }
-            
+
             in.close();
 
         } catch (Exception e) {
@@ -153,37 +150,36 @@ public class Server extends UnicastRemoteObject implements Service {
         }
     }
 
- 
-    public ArrayList<Alarm> getSensors(String jsonRes) {
+    public ArrayList<Sensor> getSensors(String jsonRes) {
 
-        ArrayList<Alarm> arrayList = new ArrayList<>();
+        ArrayList<Sensor> arrayList = new ArrayList<>();
         try {
             JSONArray jArray = new JSONArray(jsonRes);
             for (int count = 0; count < jArray.length(); count++) {
-                Alarm alarmObject = new Alarm();
+                Sensor sensorObj = new Sensor();
                 JSONObject jsonObj = jArray.getJSONObject(count);
-                alarmObject.setAlarmId(jsonObj.getInt("sensorId"));
-                alarmObject.setFloorNumber(jsonObj.getInt("floorNo"));
-                alarmObject.setRoomNumber(jsonObj.getInt("roomNo"));
-                alarmObject.setSmokeLevel(jsonObj.getInt("smokeLevel"));
-                alarmObject.setCo2Level(jsonObj.getInt("coLevel"));
-                alarmObject.setStatus(jsonObj.getString("sensorStatus"));
+                sensorObj.setSensorId(jsonObj.getInt("sensorId"));
+                sensorObj.setSensorName(jsonObj.getString("sensorName"));
+                sensorObj.setFloorNumber(jsonObj.getInt("floorNo"));
+                sensorObj.setRoomNumber(jsonObj.getInt("roomNo"));
+                sensorObj.setSmokeLevel(jsonObj.getInt("smokeLevel"));
+                sensorObj.setCo2Level(jsonObj.getInt("coLevel"));
+                sensorObj.setStatus(jsonObj.getString("sensorStatus"));
 
-                arrayList.add(alarmObject);
+                arrayList.add(sensorObj);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return arrayList;
     }
-    
- 
+
     @Override
     public String[] addSensor(String jsonObj) throws RemoteException {
         String[] response = new String[1];
         try {
 
-            Unirest.setTimeouts(0, 0); 
+            Unirest.setTimeouts(0, 0);
             HttpResponse<String> responseGet = Unirest.post("http://localhost:44381/api/sensor/addsensor")
                     .header("Content-Type", "application/json").body(jsonObj).asString();
 
@@ -202,7 +198,6 @@ public class Server extends UnicastRemoteObject implements Service {
         return response;
     }
 
-    
     @Override
     public String[] updateSensor(String jsonObj) throws RemoteException {
 
@@ -225,19 +220,17 @@ public class Server extends UnicastRemoteObject implements Service {
         return values;
     }
 
-    
-
     @Override
     public String[] deleteSensor(String id) throws RemoteException {
         String[] response = new String[1];
         try {
 
             Unirest.setTimeouts(0, 0);
-            HttpResponse<String> responseGet = Unirest.delete("http://localhost:44381/api/sensor/deletesensor" + id)
+            HttpResponse<String> responseGet = Unirest.delete("http://localhost:44381/api/sensor/deletesensor/" + id)
                     .header("Content-Type", "application/json").asString();
 
             if (responseGet.getStatus() == 200) {
-                
+
                 response[0] = String.valueOf(responseGet.getStatus());
                 getSensorDetailsApi();
 
@@ -251,14 +244,12 @@ public class Server extends UnicastRemoteObject implements Service {
 
         return response;
     }
-    
-    
+
     @Override
     public StringBuffer returnSensorDetailsApi() throws RemoteException {
 
         return response;
-        
-    }
 
+    }
 
 }

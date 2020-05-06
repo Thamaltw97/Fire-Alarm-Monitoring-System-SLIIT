@@ -48,7 +48,7 @@ namespace FireAlarmMonitoringSystem.Web.Data.Persistence
             }
             else
             {
-                //dbModelObj.sensorName = modelObj.sensorName;
+                dbModelObj.sensorName = modelObj.sensorName;
                 dbModelObj.floorNo = modelObj.floorNo;
                 dbModelObj.roomNo = modelObj.roomNo;
                 dbModelObj.sensorStatus = modelObj.sensorStatus;
@@ -61,9 +61,7 @@ namespace FireAlarmMonitoringSystem.Web.Data.Persistence
 
         public async Task<ApiResult> GetSensors()
         {
-            var retSensorObj = await _context.SensorDetails
-                ///.Where(sensorDetails => sensorDetails.sensorStatus.Equals("A"))
-                .ToListAsync();
+            var retSensorObj = await _context.SensorDetails.ToListAsync();
             return new ApiResult { BOOVAL = true, MSG = retSensorObj };
         }
 

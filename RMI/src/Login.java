@@ -52,22 +52,22 @@ public class Login extends javax.swing.JFrame {
 
         StringBuffer response = service.returnSensorDetailsApi();
 
-        ArrayList<Alarm> alarm = new ArrayList<>();
-        alarm = getSensors(response.toString());
+        ArrayList<Sensor> sensArr = new ArrayList<>();
+        sensArr = getSensors(response.toString());
 
         DefaultTableModel model = (DefaultTableModel) jTableLogin.getModel();
         model.setRowCount(0);
         Object rowData[] = new Object[6];
 
-        for (int i = 0; i < alarm.size(); i++) {
-            rowData[0] = alarm.get(i).alarmId;
-            rowData[1] = alarm.get(i).floorNumber;
-            rowData[2] = alarm.get(i).roomNumber;
+        for (int i = 0; i < sensArr.size(); i++) {
+            rowData[0] = sensArr.get(i).sensorId;
+            rowData[1] = sensArr.get(i).floorNumber;
+            rowData[2] = sensArr.get(i).roomNumber;
             
             
-            if(alarm.get(i).status.equals("A")){
-                rowData[3] = alarm.get(i).smokeLevel;
-                rowData[4] = alarm.get(i).co2Level;
+            if(sensArr.get(i).status.equals("A")){
+                rowData[3] = sensArr.get(i).smokeLevel;
+                rowData[4] = sensArr.get(i).co2Level;
                 rowData[5] = "Active";
             }else{
                 rowData[3] = "-";
@@ -79,22 +79,23 @@ public class Login extends javax.swing.JFrame {
 
     }
 
-    public ArrayList<Alarm> getSensors(String json) {
+    public ArrayList<Sensor> getSensors(String json) {
 
-        ArrayList<Alarm> arrayList = new ArrayList<>();
+        ArrayList<Sensor> arrayList = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(json);
             for (int count = 0; count < jsonArray.length(); count++) {
-                Alarm alarmObject = new Alarm();
-                JSONObject jsonObject = jsonArray.getJSONObject(count);
-                alarmObject.setAlarmId(jsonObject.getInt("sensorId"));
-                alarmObject.setFloorNumber(jsonObject.getInt("floorNo"));
-                alarmObject.setRoomNumber(jsonObject.getInt("roomNo"));
-                alarmObject.setSmokeLevel(jsonObject.getInt("smokeLevel"));
-                alarmObject.setCo2Level(jsonObject.getInt("coLevel"));
-                alarmObject.setStatus(jsonObject.getString("sensorStatus"));
+                Sensor sensorObj = new Sensor();
+                JSONObject jsonObj = jsonArray.getJSONObject(count);
+                sensorObj.setSensorId(jsonObj.getInt("sensorId"));
+                sensorObj.setSensorName(jsonObj.getString("sensorName"));
+                sensorObj.setFloorNumber(jsonObj.getInt("floorNo"));
+                sensorObj.setRoomNumber(jsonObj.getInt("roomNo"));
+                sensorObj.setSmokeLevel(jsonObj.getInt("smokeLevel"));
+                sensorObj.setCo2Level(jsonObj.getInt("coLevel"));
+                sensorObj.setStatus(jsonObj.getString("sensorStatus"));
 
-                arrayList.add(alarmObject);
+                arrayList.add(sensorObj);
             }
         } catch (JSONException e) {
             e.printStackTrace();
