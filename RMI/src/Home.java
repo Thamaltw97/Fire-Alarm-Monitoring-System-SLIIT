@@ -102,11 +102,11 @@ public class Home extends javax.swing.JFrame {
 
     }
 
-    public ArrayList<Sensor> getSensors(String json) {
+    public ArrayList<Sensor> getSensors(String jsonRes) {
 
         ArrayList<Sensor> arrayList = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(json);
+            JSONArray jsonArray = new JSONArray(jsonRes);
             for (int count = 0; count < jsonArray.length(); count++) {
                 Sensor sensorObj = new Sensor();
                 JSONObject jsonObj = jsonArray.getJSONObject(count);

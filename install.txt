@@ -1,0 +1,20 @@
+Steps to deploy the system :
+
+01) 	First opeb the FireAlarmMonitoringSystem API (Double click the solution)
+	Then run the API using IIS Express in visual studio.
+
+02)	Run the sensorStateApp(React). 
+	To run, type and enter `npm start` in the terminal window.
+
+03)	Run the WebClient(React).
+	To run, type and enter `npm start` in the terminal window.
+
+04)	Open RMI project file in Netbeans(or use similar IDE).
+
+05)	Open cmd in the path => `\RMI\build\classes\`.
+	Type 'start rmiregistry' and hit enter.
+
+06)	Then run the `server.java` class in RMI project.
+	(It will start the RMI server)
+
+07)	Run `login.java` class to start the desktop client.

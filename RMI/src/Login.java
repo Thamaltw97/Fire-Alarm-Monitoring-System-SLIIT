@@ -55,7 +55,7 @@ public class Login extends javax.swing.JFrame {
         ArrayList<Sensor> sensArr = new ArrayList<>();
         sensArr = getSensors(response.toString());
 
-        DefaultTableModel model = (DefaultTableModel) jTableLogin.getModel();
+        DefaultTableModel model = (DefaultTableModel) loginTable.getModel();
         model.setRowCount(0);
         Object rowData[] = new Object[6];
 
@@ -79,11 +79,11 @@ public class Login extends javax.swing.JFrame {
 
     }
 
-    public ArrayList<Sensor> getSensors(String json) {
+    public ArrayList<Sensor> getSensors(String jsonRes) {
 
         ArrayList<Sensor> arrayList = new ArrayList<>();
         try {
-            JSONArray jsonArray = new JSONArray(json);
+            JSONArray jsonArray = new JSONArray(jsonRes);
             for (int count = 0; count < jsonArray.length(); count++) {
                 Sensor sensorObj = new Sensor();
                 JSONObject jsonObj = jsonArray.getJSONObject(count);
@@ -111,7 +111,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         statusDisplayLogin = new java.awt.Label();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTableLogin = new javax.swing.JTable();
+        loginTable = new javax.swing.JTable();
         labelLogin = new java.awt.Label();
         alertDisplayLogin = new java.awt.Label();
         label1 = new java.awt.Label();
@@ -148,7 +148,7 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTableLogin.setModel(new javax.swing.table.DefaultTableModel(
+        loginTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -164,7 +164,7 @@ public class Login extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane8.setViewportView(jTableLogin);
+        jScrollPane8.setViewportView(loginTable);
 
         alertDisplayLogin.setAlignment(java.awt.Label.RIGHT);
         alertDisplayLogin.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -336,10 +336,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTable jTableLogin;
     private java.awt.Label label1;
     private java.awt.Label label2;
     private java.awt.Label labelLogin;
+    private javax.swing.JTable loginTable;
     private java.awt.Label statusDisplayLogin;
     private java.awt.Button submit;
     private java.awt.TextField userEmail;

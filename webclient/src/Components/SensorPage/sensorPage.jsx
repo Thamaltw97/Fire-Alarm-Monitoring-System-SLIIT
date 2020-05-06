@@ -14,7 +14,7 @@ export default class SensorPage extends Component{
 
     componentWillMount() {
         this.fetchData();
-        setInterval(this.fetchData, 15000);
+        setInterval(this.fetchData, 40000);
     }
 
 
